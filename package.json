@@ -1,0 +1,12 @@
+{
+  "name": "basics",
+  "version": "1.0.0",
+  "description": "lemme do backend",
+  "license": "MIT",
+  "author": "Wisdom Dauda",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
