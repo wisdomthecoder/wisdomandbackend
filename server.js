@@ -1,26 +1,41 @@
 import http from 'http';
+import fs from 'fs/promises';
+import path from 'path';
+import url from 'url';
+
 const PORT = process.env.PORT;
 
-const server = http.createServer((req, res) => {
+
+//Get Current Path
+const __filename = url.fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename);
+
+
+
+
+const server = http.createServer(async (req, res) => {
 
     try {
         if (req.method == "GET") {
+            let filePath;
             //creating router
             if (req.url == '/') {
-                res.writeHead(200, { "Content-Type": 'text/html' });
-                res.end('<h1>Welcome to  Micah Dauda</h1>')
-            } else
-                if (req.url == '/about') {
-                    res.writeHead(200, { "Content-Type": 'text/html' });
-                    res.end('<h1>About Micah Dauda</h1>')
-                }
+                filePath = path.join(__dirname, "public", "index.html");
+            } else if (req.url == '/about') {
+                filePath = path.join(__dirname, "public", "about.html");
+            }
+            else {
+                throw new Error("Not Found");
+            }
+
+            const data = await fs.readFile(filePath);
+
+            res.writeHead(200, { "Content-Type": 'text/html' });
+            res.end(data);
 
 
-                else {
-                    res.writeHead(400, { "Content-Type": 'text/html' });
-                    res.end('<h1>Not Found</h1>')
 
-                }
+
             //Chiling with Req
 
         } else {
