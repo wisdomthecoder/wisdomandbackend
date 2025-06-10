@@ -1,1 +1,3 @@
-console.log("Wisdom Will do Backend")
+const generateRandomNumber = require('./utils');
+
+console.log(`Random number: ${generateRandomNumber()}`)
