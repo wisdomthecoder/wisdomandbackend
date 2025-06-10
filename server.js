@@ -2,9 +2,8 @@ import http from 'http';
 const PORT = 2005;
 
 const server = http.createServer((req, res) => {
-    res.setHeader("Content-Type", 'text/html'); 
-    res.statusCode = 404;
-    res.write("<h1>Wisdom Will Do Backend</h1>");
+    res.writeHead(500, {"Content-Type":'application/json'})
+    res.end(JSON.stringify({message:"Wisdom is of God"}))
     res.end();
 
 });
