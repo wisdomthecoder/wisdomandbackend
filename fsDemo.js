@@ -45,7 +45,20 @@ const writeFile = async () => {
     
 }
 
+const appendFile = async () => {
+    try {
+        const date = new Date();
+        await fs.appendFile("./text.txt", '\nAppended a line is date of exec ' + date);
+        console.log('Append');
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
+
 
 writeFile();
+appendFile();
 readFile();
 
