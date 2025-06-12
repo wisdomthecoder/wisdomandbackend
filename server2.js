@@ -55,16 +55,20 @@ const notFoundHandler = (req, res) => {
 
 //ROute Handler for POST /api/users
 
-const createUserHandler=(req, res) => {
+const createUserHandler = (req, res) => {
     let body = '';
-    
+
     //Listen for data
     req.on('data', (chunk) => {
         body += chunk.toString();
 
     });
-    req.on('end',()=> {
-    
+    req.on('end', () => {
+        const newuser = JSON.parse(body);
+        users.push(newuser);
+        res.statusCode = 201;
+        res.write(JSON.stringify(newuser));
+        res.end();
     })
 }
 
@@ -73,10 +77,12 @@ const server = http.createServer((req, res) => {
     logger(req, res, () => {
 
         jsonMiddleWare(req, res, () => {
-            if (req.url == "/api/users") {
+            if (req.url == "/api/users" && req.method === "GET") {
                 getUserHander();
-            } else if (req.url.match(/\/api\/users\/([0-9]+)/)) {
+            } else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === "GET") {
                 getUserIdHander(req, res);
+            } else if (req.url == "/api/users" && req.method === "POST") {
+                createUserHandler(req, res);
             } else {
                 notFoundHandler(req, res);
             }
