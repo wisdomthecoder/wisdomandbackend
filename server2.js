@@ -1,4 +1,4 @@
-import { createServer } from 'http';
+import http from 'http';
 
 const PORT = process.env.PORT;
 const user = [
@@ -8,8 +8,12 @@ const user = [
 ];
 
 
-const server = createServer((req, res) => { 
-// if (req.ur)
+const server = http.createServer((req, res) => { 
+    if (req.url == '/api/users' && req.method == "GET") {
+        res.setHeader('Content-Type', 'application/json')
+        res.write(JSON.stringify(user))
+        res.end();
+}
 });
 server.listen(PORT, () => {
     console.log(`Serve on ${PORT}`)
