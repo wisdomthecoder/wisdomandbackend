@@ -13,6 +13,11 @@ const server = http.createServer((req, res) => {
         res.setHeader('Content-Type', 'application/json')
         res.write(JSON.stringify(user))
         res.end();
+    } else if (req.url.match(/\/api\/users\/([0-9]+)/)) {
+         res.setHeader('Content-Type', 'application/json')
+        res.write(JSON.stringify(user[req.url.split("/")[req.url.split("/").length-1]]))
+        res.end();
+
     } else {
         res.writeHead(404, { 'Content-Type': 'application/json' })
         res.end("Route not Found")
