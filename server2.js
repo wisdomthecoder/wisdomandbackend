@@ -53,7 +53,20 @@ const notFoundHandler = (req, res) => {
     res.end("Route not Found")
 }
 
+//ROute Handler for POST /api/users
 
+const createUserHandler=(req, res) => {
+    let body = '';
+    
+    //Listen for data
+    req.on('data', (chunk) => {
+        body += chunk.toString();
+
+    });
+    req.on('end',()=> {
+    
+    })
+}
 
 
 const server = http.createServer((req, res) => {
