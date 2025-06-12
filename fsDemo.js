@@ -33,4 +33,19 @@ const readFile = async () => {
     }
 }
 
+//writeFile()
+const writeFile = async () => {
+    try {
+        const date = new Date();
+        await fs.writeFile("./text.txt", 'Hello this is date of exec ' + date);
+        console.log('success');
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
+
+writeFile();
 readFile();
+
