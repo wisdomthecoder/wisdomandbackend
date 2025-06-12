@@ -17,11 +17,41 @@ const logger = (req, res, next) => {
 
 //JSOM Middleware
 const jsonMiddleWare = (req, res, next) => {
-            res.setHeader('Content-Type', 'application/json')
-    
+    res.setHeader('Content-Type', 'application/json')
+
     next()
 }
 
+
+//Route Handle for GET /api/uers/
+const getUserHander = (req, res) => {
+    res.write(JSON.stringify(users));
+    res.end();
+}
+
+
+//Route Handle for GET /api/uers/:id
+const getUserIdHander = (req, res) => {
+    const id = req.url.split("/")[3];
+    const user = users.find((user) => user.id == parseInt(id));
+
+    if (user) {
+
+        res.setHeader('Content-Type', 'application/json')
+        res.write(JSON.stringify(user))
+
+    } else {
+        res.writeHead(404, { 'Content-Type': 'application/json' })
+        res.end("Users not Found")
+    }
+    res.end();
+}
+
+//Not Found Handler
+const notFoundHandler = (req, res) => {
+    res.writeHead(404, { 'Content-Type': 'application/json' })
+    res.end("Route not Found")
+}
 
 
 
@@ -29,30 +59,18 @@ const jsonMiddleWare = (req, res, next) => {
 const server = http.createServer((req, res) => {
     logger(req, res, () => {
 
-
-        if (req.url == '/api/users' && req.method == "GET") {
-            res.setHeader('Content-Type', 'application/json')
-            res.write(JSON.stringify(users))
-            res.end();
-
-        } else if (req.url.match(/\/api\/users\/([0-9]+)/)) {
-            const id = req.url.split("/")[3];
-            const user = users.find((user) => user.id == parseInt(id));
-
-            if (user) {
-
-                res.setHeader('Content-Type', 'application/json')
-                res.write(JSON.stringify(user))
-
+        jsonMiddleWare(req, res, () => {
+            if (req.url == "/api/users") {
+                getUserHander();
+            } else if (req.url.match(/\/api\/users\/([0-9]+)/)) {
+                getUserIdHander(req, res);
             } else {
-                res.writeHead(404, { 'Content-Type': 'application/json' })
-                res.end("Users not Found")
+                notFoundHandler(req, res);
             }
-            res.end();
-        } else {
-            res.writeHead(404, { 'Content-Type': 'application/json' })
-            res.end("Route not Found")
-        }
+
+
+
+        })
     })
 });
 server.listen(PORT, () => {
